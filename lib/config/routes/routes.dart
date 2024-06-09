@@ -1,22 +1,29 @@
-import 'package:flutter/material.dart';
-import 'package:flutterbloc_cleanarchitecture/config/routes/routes_name.dart';
-import '../../views/views.dart';
 
+import 'package:flutter/material.dart';
+
+import '../../views/views.dart';
+import 'routes_name.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RoutesName.splashScreen:
-        return MaterialPageRoute(builder: (context) => const SplashScreen());
-      case RoutesName.loginScreen:
-        return MaterialPageRoute(builder: (context) => const LoginScreen());
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const SplashScreen());
+
       case RoutesName.homeScreen:
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const HomeScreen());
+
+      case RoutesName.loginScreen:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const LoginScreen());
+
       default:
-        return MaterialPageRoute(builder: (context) {
+        return MaterialPageRoute(builder: (_) {
           return const Scaffold(
             body: Center(
-              child: Text('No route generate'),
+              child: Text('No route defined'),
             ),
           );
         });

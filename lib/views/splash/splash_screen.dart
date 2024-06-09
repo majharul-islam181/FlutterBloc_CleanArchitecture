@@ -3,6 +3,7 @@ import 'package:flutterbloc_cleanarchitecture/config/components/internet_excepti
 
 import 'package:flutterbloc_cleanarchitecture/config/components/round_button.dart';
 import 'package:flutterbloc_cleanarchitecture/config/routes/routes_name.dart';
+import 'package:flutterbloc_cleanarchitecture/services/splash/splash_services.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -12,13 +13,25 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  SplashServices services = SplashServices();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    services.isLogin(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InterNetExceptionWidget(onPress: () {})
+          // InterNetExceptionWidget(onPress: () {}),
+
+          Text('splash screen'),
+
           // RoundButton(
           //   title: 'title',
           //   onPress: () {},
