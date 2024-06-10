@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // InterNetExceptionWidget(onPress: () {}),
 
-          Text('splash screen'),
+          Center(child: Text('splash screen')),
 
           // RoundButton(
           //   title: 'title',
