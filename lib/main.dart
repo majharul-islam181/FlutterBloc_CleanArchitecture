@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterbloc_cleanarchitecture/config/routes/routes_name.dart';
+
 import 'config/routes/routes.dart';
 
 void main() {
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: RoutesName.splashScreen,
       onGenerateRoute: Routes.generateRoute,
+      
     );
   }
 }
