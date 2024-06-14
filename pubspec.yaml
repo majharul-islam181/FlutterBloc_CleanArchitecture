@@ -43,6 +43,7 @@ dependencies:
   json_annotation: ^4.9.0
   fluttertoast: ^8.2.6
   cached_network_image: ^3.3.1
+  # creating snackbar 
   another_flushbar: ^1.12.30
   equatable: ^2.0.5
   # model bananor jonnno

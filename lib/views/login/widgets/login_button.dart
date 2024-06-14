@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterbloc_cleanarchitecture/utils/enums.dart';
-
+import 'package:flutterbloc_cleanarchitecture/utils/flash_bar_helper.dart';
 import '../../../bloc/login_bloc/login_bloc.dart';
 
 class LoginButton extends StatelessWidget {
@@ -13,27 +13,29 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginBloc, LoginState>(
+      listenWhen: (previous, current) =>
+          current.postApiStatus != previous.postApiStatus,
       listener: (context, state) {
         if (state.postApiStatus == PostApiStatus.error) {
+          FlashBarHelper.flushBarErrorMessage(state.error.toString(), context);
+
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(SnackBar(content: Text(state.error.toString())));
         }
         if (state.postApiStatus == PostApiStatus.success) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(SnackBar(content: Text(state.error.toString())));
+          FlashBarHelper.flushBarSuccessMessage('Login successful', context);
         }
-
-        if (state.postApiStatus == PostApiStatus.loading) {
-          ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(content: Text('Loading......')));
-        }
+        //Loading
+        // if (state.postApiStatus == PostApiStatus.loading) {
+        //   ScaffoldMessenger.of(context)
+        //     ..hideCurrentSnackBar()
+        //     ..showSnackBar(const SnackBar(content: Text('Loading......')));
+        // }
       },
       child: BlocBuilder<LoginBloc, LoginState>(
           buildWhen: (previous, current) =>
-              current.password != previous.password,
+              current.postApiStatus != previous.postApiStatus,
           builder: (context, state) {
             return ElevatedButton(
                 onPressed: () {
@@ -41,7 +43,9 @@ class LoginButton extends StatelessWidget {
                     context.read<LoginBloc>().add(LoginButtonEvent());
                   }
                 },
-                child: const Text('Login'));
+                child: state.postApiStatus == PostApiStatus.loading
+                    ? const CircularProgressIndicator()
+                    : const Text('Login'));
           }),
     );
   }

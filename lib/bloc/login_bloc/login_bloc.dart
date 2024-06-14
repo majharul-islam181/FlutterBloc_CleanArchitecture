@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutterbloc_cleanarchitecture/repository/auth/login_repository.dart';
 import 'package:flutterbloc_cleanarchitecture/utils/enums.dart';
 part 'login_event.dart';
@@ -11,14 +10,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginState()) {
     on<EmailChanged>(_emailChanged);
     on<PasswordChanged>(_passwordChanged);
-    on<LoginEvent>(_loginApi);
-    // on<EmailUnfocused>
+    on<LoginButtonEvent>(_loginApi);
   }
 
   void _emailChanged(EmailChanged event, Emitter<LoginState> emit) {
-    if (kDebugMode) {
-      print('Entered email: ${event.email}');
-    }
     emit(state.copyWith(email: event.email));
   }
 
@@ -26,19 +21,24 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(state.copyWith(password: event.password));
   }
 
-  void _loginApi(LoginEvent event, Emitter<LoginState> emit) {
+  Future<void> _loginApi(LoginEvent event, Emitter<LoginState> emit) async{
     // "email": "eve.holt@reqres.in",
     // "password": "cityslicka"
     Map data = {"email": state.email, "password": state.password};
+    emit(state.copyWith(postApiStatus: PostApiStatus.loading));
 
-    loginRepository.loginApi(data).then((value) {
+   await loginRepository.loginApi(data).then((value) {
       if (value.error.isNotEmpty) {
-        emit(state.copyWith(error: 'Login Successful'));
+        emit(state.copyWith(
+            error: value.error.toString(), postApiStatus: PostApiStatus.error));
       } else {
-         emit(state.copyWith(error: value.error.toString()));
+        emit(state.copyWith(
+            error: value.token, postApiStatus: PostApiStatus.success));
+        
       }
     }).onError((error, stackTrace) {
-      emit(state.copyWith(error: error.toString()));
+      emit(state.copyWith(
+          error: error.toString(), postApiStatus: PostApiStatus.error));
     });
   }
 }
