@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterbloc_cleanarchitecture/config/routes/routes_name.dart';
 import 'package:flutterbloc_cleanarchitecture/utils/enums.dart';
 import 'package:flutterbloc_cleanarchitecture/utils/flash_bar_helper.dart';
 import '../../../bloc/login_bloc/login_bloc.dart';
@@ -24,7 +25,8 @@ class LoginButton extends StatelessWidget {
             ..showSnackBar(SnackBar(content: Text(state.error.toString())));
         }
         if (state.postApiStatus == PostApiStatus.success) {
-          FlashBarHelper.flushBarSuccessMessage('Login successful', context);
+          Navigator.pushNamed(context, RoutesName.homeScreen);
+          // FlashBarHelper.flushBarSuccessMessage('Login successful', context);
         }
         //Loading
         // if (state.postApiStatus == PostApiStatus.loading) {
